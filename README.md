@@ -41,3 +41,16 @@ Then the following can be used:
 npm test       # for unit tests
 npm run linter # for the linter
 ```
+
+## Notes
+
+* The application is broken up into four main layers:
+    * Entrypoint - `./src/index.js` - executable to start the program
+    * Handler - `./src/terminalHandler.js` - interactions between the command line and the application layer
+    * Application - `./src/getFinalPosition.js` - primary logic of the program
+    * Helpers - `./src/helpers/*` - functions used to assist elsewhere in the program 
+* Unit tests are all written using `jest` and are located in the `test` directory
+* The [CI pipeline](https://app.circleci.com/pipelines/github/alastair-smith/grid-robot) runs some basic checks including unit tests, linter, and module audit
+* Given more time I would:
+    * Add tests for the handler and make it clearer, probably extracting some of it out into other functions
+    * Add more tests for the user input validation
