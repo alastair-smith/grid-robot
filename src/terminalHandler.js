@@ -17,7 +17,7 @@ const errorCatching = func => async (...args) => {
 
 const cmdline = async () => {
   const rl = readline.createInterface({ input, output })
-  console.log('Starting Robot Controller (Ctrl+c to exit)')
+  console.log('Starting Robot Controller (Ctrl+c to exit)\n')
 
   const rawGridSizeInput = await rl.question('Enter grid size: ')
   let gridSize
@@ -42,8 +42,8 @@ const cmdline = async () => {
     } catch (error) {
       console.log('Invalid input, should be in the format: (2, 3, E) LFRFF')
     }
-    const position = getFinalPosition(userCommands.position, userCommands.instructions)
-    console.log(position)
+    const finalPosition = getFinalPosition(userCommands.position, userCommands.instructions)
+    console.log(finalPosition)
   }
 }
 
