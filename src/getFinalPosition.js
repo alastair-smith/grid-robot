@@ -1,5 +1,5 @@
-const { DIRECTIONS, DISPLACMENT_MAPPING, INSTRUCTIONS, ROTATION_DIRECTION } = require('../constants')
-const positiveModulo = require('./positiveModulo')
+const { DIRECTIONS, DISPLACMENT_MAPPING, INSTRUCTIONS, ROTATION_DIRECTION } = require('./constants')
+const positiveModulo = require('./helpers/positiveModulo')
 
 const moveForwards = position => {
   const displacement = DISPLACMENT_MAPPING[position.direction]

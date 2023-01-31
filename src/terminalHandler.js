@@ -1,7 +1,7 @@
 const readline = require('node:readline/promises')
 const { stdin: input, stdout: output } = require('node:process')
 const initIsOutOfBounds = require('./helpers/isOutOfBounds.js')
-const initGetFinalPosition = require('./helpers/getFinalPosition')
+const initGetFinalPosition = require('./getFinalPosition')
 const getCommandsFromRawInput = require('./helpers/getCommandsFromRawInput')
 const getGridSizeFromRawInput = require('./helpers/getGridSizeFromRawInput')
 const formatPositionMessage = require('./helpers/formatPositionMessage')
@@ -44,9 +44,13 @@ const cmdline = async () => {
       console.log('Invalid input, should be in the format: (2, 3, E) LFRFF')
     }
     if (userCommands) {
-      const finalPosition = getFinalPosition(userCommands.position, userCommands.instructions)
-      const formattedPositionMessage = formatPositionMessage(finalPosition)
-      console.log(formattedPositionMessage)
+      if (isOutOfBounds(userCommands.position.x, userCommands.position.y)) {
+        console.log(`Invalid input, should be within the grid (${gridSize.xMax}x${gridSize.yMax})`)
+      } else {
+        const finalPosition = getFinalPosition(userCommands.position, userCommands.instructions)
+        const formattedPositionMessage = formatPositionMessage(finalPosition)
+        console.log(formattedPositionMessage)
+      }
     }
   }
 }

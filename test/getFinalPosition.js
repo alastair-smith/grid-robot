@@ -1,7 +1,7 @@
 const { describe, expect, test } = require('@jest/globals')
-const getFinalPosition = require('../../src/helpers/getFinalPosition')
-const { DIRECTIONS, INSTRUCTIONS } = require('../../src/constants')
-const isOutOfBounds = require('../../src/helpers/isOutOfBounds')
+const getFinalPosition = require('../src/getFinalPosition')
+const { DIRECTIONS, INSTRUCTIONS } = require('../src/constants')
+const isOutOfBounds = require('../src/helpers/isOutOfBounds')
 
 describe('helper getFinalPosition', () => {
   const isOutOfBoundsFalseStub = (expectedPositionX, expectedPositionY) => (x, y) => {
