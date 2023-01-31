@@ -1,0 +1,41 @@
+version: 2.1
+
+.node-image: &node-image
+  docker:
+    - image: node:18.13.0-alpine3.17@sha256:09faa7dabeae557cb6baff17be5b216fc4e3c9608aa04fe71695aad3d229a9c7
+  
+jobs:
+  lint javascript:
+    <<: *node-image
+    steps:
+      - checkout
+      - run:
+          name: Install modules
+          command: npm ci
+      - run:
+          name: Linter
+          command: npm run linter
+  unit tests:
+    <<: *node-image
+    steps:
+      - checkout
+      - run:
+          name: Install modules
+          command: npm ci
+      - run:
+          name: Unit tests
+          command: npm test
+  audit modules:
+    <<: *node-image
+    steps:
+      - checkout
+      - run:
+          name: Audit modules
+          command: npm audit
+
+workflows:
+  ci:
+    jobs:
+      - lint javascript
+      - unit tests
+      - audit modules  
