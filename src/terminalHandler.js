@@ -20,10 +20,10 @@ const cmdline = async () => {
   const rl = readline.createInterface({ input, output })
   console.log('Starting Robot Controller (Ctrl+c to exit)\n')
 
-  const rawGridSizeInput = await rl.question('Enter grid size: ')
   let gridSize
 
   while (!gridSize) {
+    const rawGridSizeInput = await rl.question('Enter grid size: ')
     try {
       gridSize = getGridSizeFromRawInput(rawGridSizeInput)
     } catch (error) {
@@ -43,9 +43,11 @@ const cmdline = async () => {
     } catch (error) {
       console.log('Invalid input, should be in the format: (2, 3, E) LFRFF')
     }
-    const finalPosition = getFinalPosition(userCommands.position, userCommands.instructions)
-    const formattedPositionMessage = formatPositionMessage(finalPosition)
-    console.log(formattedPositionMessage)
+    if (userCommands) {
+      const finalPosition = getFinalPosition(userCommands.position, userCommands.instructions)
+      const formattedPositionMessage = formatPositionMessage(finalPosition)
+      console.log(formattedPositionMessage)
+    }
   }
 }
 
