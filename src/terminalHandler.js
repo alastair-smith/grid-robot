@@ -4,6 +4,7 @@ const initIsOutOfBounds = require('./helpers/isOutOfBounds.js')
 const initGetFinalPosition = require('./helpers/getFinalPosition')
 const getCommandsFromRawInput = require('./helpers/getCommandsFromRawInput')
 const getGridSizeFromRawInput = require('./helpers/getGridSizeFromRawInput')
+const formatPositionMessage = require('./helpers/formatPositionMessage')
 
 const errorCatching = func => async (...args) => {
   try {
@@ -43,7 +44,8 @@ const cmdline = async () => {
       console.log('Invalid input, should be in the format: (2, 3, E) LFRFF')
     }
     const finalPosition = getFinalPosition(userCommands.position, userCommands.instructions)
-    console.log(finalPosition)
+    const formattedPositionMessage = formatPositionMessage(finalPosition)
+    console.log(formattedPositionMessage)
   }
 }
 
