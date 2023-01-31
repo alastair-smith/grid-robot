@@ -18,9 +18,12 @@ const DISPLACMENT_MAPPING = {
   [DIRECTIONS[3]]: { x: -1, y: 0 }
 }
 
+const GRID_MINIMUMS = { x: 0, y: 0 }
+
 module.exports = {
   DIRECTIONS,
   DISPLACMENT_MAPPING,
+  GRID_MINIMUMS,
   ROTATION_DIRECTION,
   INSTRUCTIONS
 }

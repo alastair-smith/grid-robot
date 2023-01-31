@@ -20,9 +20,14 @@ const rotate = (position, rotationDirection) => {
   return { ...position, direction: newDirection }
 }
 
-module.exports = (position, instructions) => {
+module.exports = isOutOfBounds => (position, instructions) => {
   if (!instructions.length) return position
 
-  if (instructions[0] === INSTRUCTIONS.FORWARD) return moveForwards(position)
-  else return rotate(position, instructions[0])
+  const newPosition = instructions[0] === INSTRUCTIONS.FORWARD
+    ? moveForwards(position)
+    : rotate(position, instructions[0])
+
+  return isOutOfBounds(newPosition.x, newPosition.y)
+    ? { ...position, lost: true }
+    : newPosition
 }

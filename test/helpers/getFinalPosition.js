@@ -3,10 +3,21 @@ const getFinalPosition = require('../../src/helpers/getFinalPosition')
 const { DIRECTIONS, INSTRUCTIONS } = require('../../src/constants')
 
 describe('helper getFinalPosition', () => {
-  test('returns position when there are no further instructions', () => {
-    const position = { x: 0, y: 0, direction: DIRECTIONS[0] }
-    const instructions = []
-    expect(getFinalPosition(position, instructions)).toEqual(position)
+  const isOutOfBoundsFalseStub = (expectedPositionX, expectedPositionY) => (x, y) => {
+    if (x === expectedPositionX && y === expectedPositionY) return false
+    throw new Error('outOfBounds functions used wrong')
+  }
+  const isOutOfBoundsTrueStub = (expectedPositionX, expectedPositionY) => (x, y) => {
+    if (x === expectedPositionX && y === expectedPositionY) return true
+    throw new Error('outOfBounds functions used wrong')
+  }
+
+  describe('no instructions', () => {
+    test('returns position when there are no further instructions', () => {
+      const position = { x: 0, y: 0, direction: DIRECTIONS[0] }
+      const instructions = []
+      expect(getFinalPosition(isOutOfBoundsFalseStub(position.x, position.y))(position, instructions)).toEqual(position)
+    })
   })
 
   describe('forwards', () => {
@@ -15,35 +26,35 @@ describe('helper getFinalPosition', () => {
       const instructions = [INSTRUCTIONS.FORWARD]
 
       const expectedPosition = { x: 0, y: 1, direction: DIRECTIONS[0] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position one space further east when facing east and moving forward', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[1] }
       const instructions = [INSTRUCTIONS.FORWARD]
 
       const expectedPosition = { x: 1, y: 0, direction: DIRECTIONS[1] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position one space further south when facing south and moving forward', () => {
       const position = { x: 0, y: 1, direction: DIRECTIONS[2] }
       const instructions = [INSTRUCTIONS.FORWARD]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[2] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position one space further west when facing east and moving forward', () => {
       const position = { x: 1, y: 0, direction: DIRECTIONS[3] }
       const instructions = [INSTRUCTIONS.FORWARD]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[3] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing east when facing north and turning right', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[0] }
       const instructions = [INSTRUCTIONS.RIGHT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[1] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
   })
 
@@ -53,56 +64,66 @@ describe('helper getFinalPosition', () => {
       const instructions = [INSTRUCTIONS.RIGHT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[1] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing south when facing east and turning right', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[1] }
       const instructions = [INSTRUCTIONS.RIGHT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[2] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing west when facing south and turning right', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[2] }
       const instructions = [INSTRUCTIONS.RIGHT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[3] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing north when facing west and turning right', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[3] }
       const instructions = [INSTRUCTIONS.RIGHT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[0] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing west when facing north and turning left', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[0] }
       const instructions = [INSTRUCTIONS.LEFT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[3] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing south when facing west and turning left', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[3] }
       const instructions = [INSTRUCTIONS.LEFT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[2] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing east when facing south and turning left', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[2] }
       const instructions = [INSTRUCTIONS.LEFT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[1] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
     })
     test('returns position facing north when facing east and turning left', () => {
       const position = { x: 0, y: 0, direction: DIRECTIONS[1] }
       const instructions = [INSTRUCTIONS.LEFT]
 
       const expectedPosition = { x: 0, y: 0, direction: DIRECTIONS[0] }
-      expect(getFinalPosition(position, instructions)).toEqual(expectedPosition)
+      expect(getFinalPosition(isOutOfBoundsFalseStub(expectedPosition.x, expectedPosition.y))(position, instructions)).toEqual(expectedPosition)
+    })
+  })
+
+  describe('out of bounds', () => {
+    test('returns the current position with the lost property when the instructions lead the robot out of bounds', () => {
+      const position = { x: 10, y: 8, direction: DIRECTIONS[1] }
+      const instructions = [INSTRUCTIONS.FORWARD]
+
+      const expectedPosition = { x: 10, y: 8, direction: DIRECTIONS[1], lost: true }
+      expect(getFinalPosition(isOutOfBoundsTrueStub(11, position.y))(position, instructions)).toEqual(expectedPosition)
     })
   })
 })
