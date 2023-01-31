@@ -20,14 +20,17 @@ const rotate = (position, rotationDirection) => {
   return { ...position, direction: newDirection }
 }
 
-module.exports = isOutOfBounds => (position, instructions) => {
-  if (!instructions.length) return position
+module.exports = isOutOfBounds => {
+  const getFinalPosition = (position, instructions) => {
+    if (!instructions.length) return position
 
-  const newPosition = instructions[0] === INSTRUCTIONS.FORWARD
-    ? moveForwards(position)
-    : rotate(position, instructions[0])
+    const newPosition = instructions[0] === INSTRUCTIONS.FORWARD
+      ? moveForwards(position)
+      : rotate(position, instructions[0])
 
-  return isOutOfBounds(newPosition.x, newPosition.y)
-    ? { ...position, lost: true }
-    : newPosition
+    if (isOutOfBounds(newPosition.x, newPosition.y)) return { ...position, lost: true }
+
+    return getFinalPosition(newPosition, instructions.slice(1))
+  }
+  return getFinalPosition
 }

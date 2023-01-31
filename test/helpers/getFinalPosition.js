@@ -1,6 +1,7 @@
 const { describe, expect, test } = require('@jest/globals')
 const getFinalPosition = require('../../src/helpers/getFinalPosition')
 const { DIRECTIONS, INSTRUCTIONS } = require('../../src/constants')
+const isOutOfBounds = require('../../src/helpers/isOutOfBounds')
 
 describe('helper getFinalPosition', () => {
   const isOutOfBoundsFalseStub = (expectedPositionX, expectedPositionY) => (x, y) => {
@@ -124,6 +125,63 @@ describe('helper getFinalPosition', () => {
 
       const expectedPosition = { x: 10, y: 8, direction: DIRECTIONS[1], lost: true }
       expect(getFinalPosition(isOutOfBoundsTrueStub(11, position.y))(position, instructions)).toEqual(expectedPosition)
+    })
+  })
+
+  describe('series of instructions', () => {
+    test('(2, 3, E) LFRFF within range', () => {
+      const position = { x: 2, y: 3, direction: DIRECTIONS[1] }
+      const instructions = [
+        INSTRUCTIONS.LEFT,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.RIGHT,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.FORWARD
+      ]
+
+      const expectedPosition = { x: 4, y: 4, direction: DIRECTIONS[1] }
+      expect(getFinalPosition(isOutOfBounds(4, 8))(position, instructions)).toEqual(expectedPosition)
+    })
+    test('(0, 2, N) FFLFRFF outside range', () => {
+      const position = { x: 0, y: 2, direction: DIRECTIONS[0] }
+      const instructions = [
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.LEFT,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.RIGHT,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.FORWARD
+      ]
+
+      const expectedPosition = { x: 0, y: 4, direction: DIRECTIONS[3], lost: true }
+      expect(getFinalPosition(isOutOfBounds(4, 8))(position, instructions)).toEqual(expectedPosition)
+    })
+    test('(2, 3, N) FLLFR within range', () => {
+      const position = { x: 2, y: 3, direction: DIRECTIONS[0] }
+      const instructions = [
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.LEFT,
+        INSTRUCTIONS.LEFT,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.RIGHT
+      ]
+
+      const expectedPosition = { x: 2, y: 3, direction: DIRECTIONS[3] }
+      expect(getFinalPosition(isOutOfBounds(4, 8))(position, instructions)).toEqual(expectedPosition)
+    })
+    test('(1, 0, S) FFRLF outside range', () => {
+      const position = { x: 1, y: 0, direction: DIRECTIONS[2] }
+      const instructions = [
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.FORWARD,
+        INSTRUCTIONS.RIGHT,
+        INSTRUCTIONS.LEFT,
+        INSTRUCTIONS.FORWARD
+      ]
+
+      const expectedPosition = { x: 1, y: 0, direction: DIRECTIONS[2], lost: true }
+      expect(getFinalPosition(isOutOfBounds(4, 8))(position, instructions)).toEqual(expectedPosition)
     })
   })
 })
