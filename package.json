@@ -1,0 +1,21 @@
+{
+  "name": "multiverse-robot",
+  "version": "1.0.0",
+  "description": "direct a robot around a user defined grid",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "./src/index.js",
+    "linter": "standard"
+  },
+  "author": "Alastair Smith",
+  "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/alastair-smith/grid-robot.git"
+  },
+  "devDependencies": {
+    "jest": "29.4.1",
+    "standard": "17.0.0"
+  }
+}
